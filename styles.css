@@ -194,12 +194,13 @@ input[type="range"] {
     border: 2px dashed #ddd;
     border-radius: 8px;
     background: #fafafa;
+    max-height: 70vh;
+    max-width: 100%;
+    overflow: auto;
 }
 
 #main-canvas {
     display: block;
-    max-width: 100%;
-    max-height: 70vh;
     background: white;
 }
 
@@ -414,4 +415,27 @@ input[type="file"] {
     .canvas-area, .batch-preview {
         padding: 1rem;
     }
+}
+
+.language-switcher {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.lang-btn {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ddd;
+    background: #f8f9fa;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.lang-btn.active, .lang-btn:hover {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
 }
