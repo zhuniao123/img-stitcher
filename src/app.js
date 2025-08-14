@@ -80,8 +80,10 @@ class App {
             
             if (imageFiles.length > 0) {
                 const rect = canvas.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const x = (e.clientX - rect.left) * scaleX;
+                const y = (e.clientY - rect.top) * scaleY;
                 
                 const cellIndex = this.getCellAtPosition(x, y);
                 if (cellIndex !== -1) {
@@ -92,8 +94,10 @@ class App {
         
         canvas.addEventListener('click', (e) => {
             const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const x = (e.clientX - rect.left) * scaleX;
+            const y = (e.clientY - rect.top) * scaleY;
             
             const cellIndex = this.getCellAtPosition(x, y);
             if (cellIndex !== -1) {
@@ -126,7 +130,7 @@ class App {
             this.render();
         } catch (error) {
             console.error('加载图片失败:', error);
-            alert('加载图片失败: ' + error.message);
+            alert(window.i18n?.t('alerts.loadImageFailed', { msg: error.message }) || '加载图片失败: ' + error.message);
         }
     }
     
@@ -162,7 +166,7 @@ class App {
             await this.exporter.export(this.gridModel);
         } catch (error) {
             console.error('导出失败:', error);
-            alert('导出失败: ' + error.message);
+            alert(window.i18n?.t('alerts.exportFailed', { msg: error.message }) || '导出失败: ' + error.message);
         }
     }
     
@@ -176,7 +180,7 @@ class App {
             await this.batchProcessor.process(files, options);
         } catch (error) {
             console.error('批量处理失败:', error);
-            alert('批量处理失败: ' + error.message);
+            alert(window.i18n?.t('alerts.batchFailed', { msg: error.message }) || '批量处理失败: ' + error.message);
         }
     }
 }
