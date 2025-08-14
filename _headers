@@ -1,4 +1,5 @@
 # Cloudflare Pages 头部配置
+
 # 安全头部
 /*
   X-Frame-Options: DENY
@@ -7,21 +8,21 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
 
-# 静态资源缓存优化
-/src/*
-  Cache-Control: public, max-age=31536000, immutable
-
-/*.css
-  Cache-Control: public, max-age=31536000, immutable
-
-/*.js
-  Cache-Control: public, max-age=31536000, immutable
-
-# HTML 文件短缓存
+# HTML 文件短缓存（便于快速更新）
 /*.html
   Cache-Control: public, max-age=3600
 
-# 图片资源缓存
+# JS/CSS 使用中等缓存周期（非指纹文件不使用 immutable）
+/src/*
+  Cache-Control: public, max-age=86400
+
+/*.css
+  Cache-Control: public, max-age=86400
+
+/*.js
+  Cache-Control: public, max-age=86400
+
+# 图片资源长缓存（文件名通常不变更，适合 immutable）
 /*.png
   Cache-Control: public, max-age=31536000, immutable
 
