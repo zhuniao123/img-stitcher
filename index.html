@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片拼接工具</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>图片拼接工具</h1>
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="grid">网格拼接</button>
+                <button class="tab-btn" data-tab="batch">批量处理</button>
+            </div>
+        </header>
+
+        <!-- 网格拼接面板 -->
+        <div class="tab-content active" id="grid-panel">
+            <div class="main-content">
+                <div class="sidebar">
+                    <div class="control-group">
+                        <label>布局设置</label>
+                        <div class="layout-presets">
+                            <button class="preset-btn" data-layout="1x2">1×2</button>
+                            <button class="preset-btn active" data-layout="2x2">2×2</button>
+                            <button class="preset-btn" data-layout="3x3">3×3</button>
+                        </div>
+                        <div class="custom-layout">
+                            <input type="number" id="rows" min="1" max="10" value="2" placeholder="行">
+                            <span>×</span>
+                            <input type="number" id="cols" min="1" max="10" value="2" placeholder="列">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>单元格设置</label>
+                        <select id="cell-size-mode">
+                            <option value="fixed">固定大小</option>
+                            <option value="auto">自动膨胀</option>
+                        </select>
+                        <div class="size-inputs" id="size-inputs">
+                            <input type="number" id="cell-width" min="50" max="2000" value="300" placeholder="宽度">
+                            <input type="number" id="cell-height" min="50" max="2000" value="300" placeholder="高度">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>填充模式</label>
+                        <select id="fit-mode">
+                            <option value="contain">等比缩放(完整显示)</option>
+                            <option value="cover">等比缩放(裁剪铺满)</option>
+                            <option value="stretch">拉伸铺满</option>
+                            <option value="tile">平铺</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label>间距设置</label>
+                        <input type="range" id="gap" min="0" max="50" value="0">
+                        <span id="gap-value">0px</span>
+                    </div>
+
+                    <div class="control-group">
+                        <label>
+                            <input type="checkbox" id="show-grid">
+                            显示网格线
+                        </label>
+                    </div>
+
+                    <div class="control-group">
+                        <label>导出设置</label>
+                        <select id="export-format">
+                            <option value="png">PNG (无损)</option>
+                            <option value="jpeg">JPEG</option>
+                        </select>
+                        <div class="quality-control" id="quality-control" style="display: none;">
+                            <label>质量</label>
+                            <input type="range" id="quality" min="10" max="100" value="92">
+                            <span id="quality-value">92%</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <button id="clear-all" class="btn btn-secondary">清空所有</button>
+                        <button id="export-btn" class="btn btn-primary">导出图片</button>
+                    </div>
+                </div>
+
+                <div class="canvas-area">
+                    <div class="canvas-container">
+                        <canvas id="main-canvas"></canvas>
+                        <div class="grid-overlay" id="grid-overlay"></div>
+                    </div>
+                    <div class="drop-hint" id="drop-hint">
+                        拖拽图片到网格中，或点击网格选择图片
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 批量处理面板 -->
+        <div class="tab-content" id="batch-panel">
+            <div class="batch-content">
+                <div class="batch-sidebar">
+                    <div class="control-group">
+                        <label>选择图片</label>
+                        <button id="select-files" class="btn">选择文件</button>
+                        <button id="select-folder" class="btn" style="display: none;">选择文件夹</button>
+                        <div id="file-list"></div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>匹配规则</label>
+                        <input type="text" id="pattern" placeholder="例如: test{n}" value="test{n}">
+                        <small>使用 {n} 表示序号，工具会自动匹配相邻序号的图片</small>
+                    </div>
+
+                    <div class="control-group">
+                        <label>拼接模式</label>
+                        <select id="batch-mode">
+                            <option value="horizontal">水平(左右)</option>
+                            <option value="vertical">垂直(上下)</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label>统一尺寸</label>
+                        <input type="number" id="target-width" min="50" max="4000" value="500" placeholder="宽度">
+                        <input type="number" id="target-height" min="50" max="4000" value="500" placeholder="高度">
+                    </div>
+
+                    <div class="control-group">
+                        <label>质量设置</label>
+                        <select id="batch-format">
+                            <option value="png">PNG</option>
+                            <option value="jpeg">JPEG</option>
+                        </select>
+                        <input type="range" id="batch-quality" min="10" max="100" value="92">
+                        <span id="batch-quality-value">92%</span>
+                    </div>
+
+                    <div class="control-group">
+                        <button id="start-batch" class="btn btn-primary">开始批量处理</button>
+                    </div>
+                </div>
+
+                <div class="batch-preview">
+                    <div id="batch-progress" style="display: none;">
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <div class="progress-text">处理中...</div>
+                    </div>
+                    <div id="batch-results"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="src/app.js"></script>
+</body>
+</html>
