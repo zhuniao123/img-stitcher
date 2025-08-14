@@ -25,11 +25,19 @@
 
 ## 快速开始
 
-### 本地使用
+### 🌐 在线使用（如果已部署）
+如果你已在 Cloudflare Pages 或其他静态托管（如 GitHub Pages、Vercel）完成部署，请直接访问你自己的域名（通常为 xxx.pages.dev 或自定义域名）。
+
+- ⚡ 全球 CDN 加速访问
+- 🔒 自动 HTTPS 安全连接
+- 📱 完美支持移动设备
+- 🆓 完全免费使用
+
+### 💻 本地使用
 1. 直接在浏览器中打开 `index.html`
 2. 推荐使用 Chrome 或 Edge 以获得完整功能
 
-### Docker 部署
+### 🐳 Docker 部署
 ```bash
 # 构建镜像
 docker build -t img-stitcher .
@@ -44,6 +52,18 @@ docker-compose up -d
 ```
 
 然后访问 `http://localhost:8080`
+
+### ☁️ Cloudflare Pages 部署
+1. **Fork 本仓库**到你的 GitHub 账户
+2. **登录 [Cloudflare Pages](https://pages.cloudflare.com/)**
+3. **连接 GitHub**，选择 forked 仓库
+4. **构建设置**：
+   - 构建命令：留空（静态站点无需构建）
+   - 构建输出目录：`/`（根目录）
+   - 环境变量：无需设置
+5. **部署完成**后自动获得 `*.pages.dev` 域名
+
+> **优势**: 全球 CDN、自动 HTTPS、零成本、无限流量
 
 ## 使用方法
 
@@ -112,4 +132,3 @@ A: 请尝试不同的填充模式：
 - 平铺（tile）：按原尺寸重复平铺填满
 
 ## 项目结构
-```
